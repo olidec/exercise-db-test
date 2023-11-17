@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'preact/hooks'
-import './app.css'
+import { useEffect, useState } from "preact/hooks"
+import "./app.css"
 
 async function askServer(route, method, data = {}) {
   const baseUrl = "http://localhost:3000"
-  const response = await fetch(baseUrl + route, {...data, method: method})
+  const response = await fetch(baseUrl + route, { ...data, method: method })
   return response.json()
 }
 
@@ -14,7 +14,6 @@ export function App() {
     const res = await askServer("/", "GET")
     setData(res)
   }, [])
-
 
   const getRoot = async () => {
     const res = await askServer("/", "GET")
@@ -33,9 +32,7 @@ export function App() {
         <button onClick={() => getRoot()}>Get Root</button>
         <button onClick={() => getTest()}>Get Test</button>
       </div>
-      <div>
-        {data.msg}
-      </div>
+      <div>{data.msg}</div>
     </>
   )
 }
