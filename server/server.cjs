@@ -5,7 +5,7 @@ const app = express()
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    res.json({message: "Hello World"})
+    res.json({msg: "Hello World"})
 })
 
 router.get("/api/test", (req, res) => {
