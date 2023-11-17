@@ -18,6 +18,27 @@ router.get("/api/test", (req, res) => {
   })
 })
 
+router.post("/api/secret", checkLogin, (req, res) => {
+  res.json({
+    msg: "Very secure",
+    data: {
+      secret: "Top Secret",
+    },
+  })
+})
+
+function checkLogin(req, res, next) {
+  console.log(req.body)
+  if (req.body.pw === "password") {
+    return next()
+  }
+
+  res.json({
+    msg: "Not allowed",
+    err: "Wrong password",
+  })
+}
+
 app.use(cors({ origin: true, credentials: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
