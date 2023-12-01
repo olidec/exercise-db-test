@@ -1,11 +1,21 @@
 const express = require("express")
 const cors = require("cors")
+const PrismaClient = require("@prisma/client")
+const prisma = new PrismaClient.PrismaClient()
+
 
 const app = express()
 const router = express.Router()
 
 router.get("/", (req, res) => {
   res.json({ msg: "Hello World" })
+})
+
+router.get("/api/users", async (req,res) => {
+  const users = await prisma.user.findMany()
+  console.log(users)
+  res.json(users)
+
 })
 
 router.get("/api/test", (req, res) => {

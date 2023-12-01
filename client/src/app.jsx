@@ -1,9 +1,12 @@
 import { useEffect, useState } from "preact/hooks"
 import "./app.css"
 import { askServer } from "./utils/connector"
+import Data from "./components/Data"
+import Button from "./components/Button"
 
 export function App() {
   const [data, setData] = useState({})
+  
 
   useEffect(async () => {
     const res = await askServer("/", "GET")
@@ -26,6 +29,12 @@ export function App() {
     const res = await askServer("/api/secret", "POST", { pw: "not this one" })
     setData(res)
   }
+  const getAllUsers = async () => {
+    const res = await askServer("/api/users","GET")
+    console.log(res)
+    setUsers(res)
+}
+  
 
   return (
     <>
@@ -38,7 +47,8 @@ export function App() {
           Get Secret (wrong password)
         </button>
       </div>
-      <div>{data.msg}</div>
+      <Data data={data} />
+      <Button />
     </>
   )
 }
