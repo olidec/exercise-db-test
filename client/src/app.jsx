@@ -29,11 +29,7 @@ export function App() {
     const res = await askServer("/api/secret", "POST", { pw: "not this one" })
     setData(res)
   }
-  const getAllUsers = async () => {
-    const res = await askServer("/api/users","GET")
-    console.log(res)
-    setUsers(res)
-}
+
   
 
   return (

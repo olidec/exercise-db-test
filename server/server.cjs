@@ -28,6 +28,18 @@ router.get("/api/test", (req, res) => {
   })
 })
 
+router.post("/api/new", async (req,res) => {
+  const {name, email, password} = req.body
+  const newUser = await prisma.user.create({
+    data: {
+      name,
+      email,
+      password,
+    },
+  })
+  res.json("success")
+})
+
 router.post("/api/secret", checkLogin, (req, res) => {
   res.json({
     msg: "Very secure",
