@@ -39,6 +39,7 @@ export function App() {
   return (
     <>
       <h1>Hello World!</h1>
+      <h2>Hallo Patrick</h2>
       {/* <EquationRenderer latex="c = \sqrt{a^2 + b^2}" /> */}
       <div>
         <button onClick={() => getRoot()}>Get Root</button>
