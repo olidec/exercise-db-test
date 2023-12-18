@@ -3,7 +3,6 @@ const cors = require("cors")
 const PrismaClient = require("@prisma/client")
 const prisma = new PrismaClient.PrismaClient()
 
-
 const app = express()
 const router = express.Router()
 
@@ -13,7 +12,7 @@ router.get("/", (req, res) => {
 
 router.get("/api/users", async (req,res) => {
   const users = await prisma.user.findMany()
-  console.log(users)
+  // console.log(users)
   res.json(users)
 
 })
@@ -28,17 +27,43 @@ router.get("/api/test", (req, res) => {
   })
 })
 
-router.post("/api/new", async (req,res) => {
-  const {name, email, password} = req.body
-  const newUser = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password,
-    },
-  })
-  res.json("success")
+router.post("/api/user", async (req,res) => {
+  const {email, name, password} = req.body;
+  try {
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        name,
+        password,
+      },
+    })  
+    console.log(newUser)
+    res.json(newUser)
+    
+  } catch (error) {
+      res.json({msg:"Error in DB request", err: error})
+  }
 })
+
+router.put("/api/user/", async (req, res) => {
+  const { email, name, password } = req.body;
+  
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { email },
+      data: {
+        email,
+        name,
+        password,
+      },
+    });
+    
+    console.log(updatedUser);
+    res.json(updatedUser);
+  } catch (error) {
+    res.json({ msg: "Error in DB request", err: error });
+  }
+});
 
 router.post("/api/secret", checkLogin, (req, res) => {
   res.json({
@@ -60,6 +85,55 @@ function checkLogin(req, res, next) {
     err: "Wrong password",
   })
 }
+
+router.get("/api/ex", async (req,res) => {
+  const exs = await prisma.exercise.findMany()
+  // console.log(exs)
+  res.json(exs)
+})
+
+// router.get("/api/ex/:id", async (req,res) => {
+//   const {id} = req.params
+//   const ex = await prisma.exercise.findUnique({where: {id: Number(id)}})
+//   console.log(ex)
+//   res.json(ex)
+// })
+
+router.get("/api/exercise-ids", async (req, res) => {
+  try {
+    const exercises = await prisma.exercise.findMany({
+      select: {
+        id: true, // Only select the id field
+      },
+    });
+    res.json(exercises.map(exercise => exercise.id));
+  } catch (error) {
+    res.status(500).json({ msg: "Error retrieving exercise IDs", err: error });
+  }
+});
+
+router.post("/api/ex", async (req,res) => {
+  const { summary, content, solution } = req.body;
+  try {
+    const newEx = await prisma.exercise.create({
+      data: {
+        summary,
+        content,
+        solution,
+      },
+    })  
+    console.log(newEx)
+    res.json(newEx)
+    
+  } catch (error) {
+    if (error.code === 'P2002') {
+      res.json({msg:"Exercise already exists", err: error})
+    }
+    else {
+      res.json({msg:"Error in DB request", err: error})
+    }
+  }
+})
 
 app.use(cors({ origin: true, credentials: true }))
 app.use(express.json())
