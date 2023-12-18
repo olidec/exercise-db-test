@@ -6,7 +6,6 @@ export default function Button() {
 
     const getAllUsers = async () => {
         const res = await askServer("/api/users","GET")
-        console.log(res)
         setUsers(res)
     }
 

@@ -15,4 +15,30 @@ model User {
   email String @unique
   name String?
   password String?
+  // role Role @default(USER)
+  // exercises Exercise[]
 }
+
+model Exercise {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+  summary String
+  content String @unique
+  solution String
+  // author User @relation(fields: [authorId], references: [id])
+  // authorId Int
+  // categories Category[]
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  // exercises Exercise[]
+}
+
+
+// enum Role {
+//   USER
+//   ADMIN
+// }
