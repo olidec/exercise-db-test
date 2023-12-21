@@ -6,6 +6,7 @@ import Button from "./components/Button"
 import Form from "./components/Form"
 import Exform from "./components/Exform"
 import Exfind from "./components/Exfind"
+import EquationRenderer from "./components/Equationrenderer"
 
 export function App() {
   const [data, setData] = useState({})
@@ -33,6 +34,12 @@ export function App() {
     setData(res)
   }
 
+  const getKaTeX = async () => {
+    const res = await askServer("/api/katex", "GET")
+    setData(res)
+    document.getElementById("equation").innerHTML = res.msg
+  }
+
   
   
 
@@ -40,7 +47,7 @@ export function App() {
     <>
       <h1>Hello World!</h1>
       <h2>Hallo Patrick</h2>
-      {/* <EquationRenderer latex="c = \sqrt{a^2 + b^2}" /> */}
+      <EquationRenderer>{String.raw`\sqrt{3} x^2 + y^2 = c^2`}</EquationRenderer>
       <div>
         <button onClick={() => getRoot()}>Get Root</button>
         <button onClick={() => getTest()}>Get Test</button>
@@ -48,7 +55,9 @@ export function App() {
         <button onClick={() => getWrongPassword()}>
           Get Secret (wrong password)
         </button>
+        <button onClick={() => getKaTeX()}>Get KaTeX</button>
       </div>
+      <div id="equation"></div>
       <Data data={data} />
       <Button />
       <div id="user-form">

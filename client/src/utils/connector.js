@@ -1,9 +1,9 @@
-export async function askServer(route, method, body = {}) {
+export async function askServer(route, method, body = {}, content = "application/json;charset=utf-8") {
     // return new Promise(() => mock(route))
     const baseUrl = "http://localhost:3000"
     const data = {
       headers: {
-        "Content-Type": "application/json;charset=utf-8",
+        "Content-Type": content,
       },
       credentials: "include",
       mode: "cors",
@@ -14,7 +14,12 @@ export async function askServer(route, method, body = {}) {
       data.body = JSON.stringify(body)
     }
     const response = await fetch(baseUrl + route, data)
-    return response.json()
+    if (content === "text/html") {
+      return response.text()
+    }
+    else {
+      return response.json()
+    }
   }
 
 
