@@ -10,6 +10,7 @@ import EquationRenderer from "./components/Equationrenderer"
 
 export function App() {
   const [data, setData] = useState({})
+  const [math, setMath] = useState({})
   
 
   // useEffect(async () => {
@@ -36,7 +37,7 @@ export function App() {
 
   const getKaTeX = async () => {
     const res = await askServer("/api/katex", "GET")
-    setData(res)
+    setMath(res)
     document.getElementById("equation").innerHTML = res.msg
   }
 
