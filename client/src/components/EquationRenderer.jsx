@@ -1,17 +1,17 @@
-import React, { useEffect, useRef } from 'react';
-// import 'katex/dist/katex.min.css';
-// import katex from 'katex';
+import katex from 'katex';
+import 'katex/dist/katex.css';
+import { useEffect, useRef } from 'preact/hooks';
 
-export default function EquationRenderer(latex){
-  const containerRef = useRef();
+export default function EquationRenderer({children}) {
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    if (containerRef.current) {
-      katex.render(latex, containerRef.current, {
+    // console.log(children)
+      katex.render(children, containerRef.current, {
         throwOnError: false,  // Set to true if you want to handle errors
       });
-    }
-  }, [latex]);
+  
+  }, [containerRef]);
 
-  return <div ref={containerRef} />;
+  return <div ref={containerRef}>{children}</div>;
 };

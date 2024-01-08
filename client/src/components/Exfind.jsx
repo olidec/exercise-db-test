@@ -16,6 +16,11 @@ export default function Exfind() {
     const getEx = async () => {
         const res = await askServer("/api/ex","GET")
         setEx(res)
+        console.log(res[1].content)
+        document.getElementById("exercise").innerHTML = res[5].content
+        // res.map((exercise) => (
+        //     <li key={exercise.id}>{exercise.content}</li>
+        // ))
     }
 
     return (
@@ -32,10 +37,8 @@ export default function Exfind() {
             </div> */}
             <button onClick={() => getEx()}>Get Exercises</button>
             <div>
-                <ol>
-                    {ex.map((exercise) => (
-                        <li key={exercise.id}>{exercise.content}</li>
-                    ))}
+                <ol id="exercise">
+                    
                 </ol>
             </div>
 
